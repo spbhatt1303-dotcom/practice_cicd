@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Boundary — Live from the Pitch</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Archivo+Black&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --night:#0E1B24;
+    --night-2:#122733;
+    --pitch:#1F4D36;
+    --pitch-2:#2A6144;
+    --tan:#C9A66B;
+    --flap-bg:#14171A;
+    --flap-cream:#EDE6D6;
+    --ball:#A32921;
+    --ball-seam:#EDE6D6;
+    --amber:#F2B441;
+    --paper:#F4F0E6;
+    --ink:#14171A;
+    --ink-soft:#4A5057;
+    --line: rgba(237,230,214,0.14);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Work Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  a{color:inherit;}
+  .eyebrow{
+    font-family:'Work Sans',sans-serif;
+    text-transform:uppercase;
+    letter-spacing:0.18em;
+    font-size:0.72rem;
+    font-weight:600;
+    color:var(--amber);
+  }
+  .serif{ font-family:'Fraunces', serif; }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    min-height:100svh;
+    background:
+      radial-gradient(1200px 500px at 20% -10%, rgba(242,180,65,0.14), transparent 60%),
+      radial-gradient(900px 400px at 85% 0%, rgba(242,180,65,0.10), transparent 55%),
+      linear-gradient(180deg, var(--night) 0%, var(--night-2) 55%, var(--pitch) 100%);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    color:var(--flap-cream);
+  }
+
+  .floodlights{
+    position:absolute; inset:0; pointer-events:none;
+  }
+  .floodlights .beam{
+    position:absolute; top:-10%;
+    width:340px; height:900px;
+    background:linear-gradient(180deg, rgba(242,180,65,0.20), rgba(242,180,65,0) 70%);
+    filter:blur(2px);
+    transform-origin:top center;
+    animation:shimmer 6s ease-in-out infinite;
+  }
+  .floodlights .beam.b1{ left:-4%; transform:rotate(18deg); animation-delay:0s;}
+  .floodlights .beam.b2{ right:-6%; transform:rotate(-16deg); animation-delay:1.4s;}
+  @keyframes shimmer{
+    0%,100%{ opacity:0.55; }
+    50%{ opacity:0.9; }
+  }
+
+  .stars{ position:absolute; inset:0; opacity:0.5; }
+  .stars span{
+    position:absolute; width:2px; height:2px; border-radius:50%;
+    background:var(--flap-cream); opacity:0.5;
+    animation:twinkle 3.5s ease-in-out infinite;
+  }
+  @keyframes twinkle{ 0%,100%{opacity:0.15;} 50%{opacity:0.8;} }
+
+  .nav{
+    position:relative; z-index:5;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1.6rem clamp(1.2rem, 4vw, 3rem);
+  }
+  .brand{
+    font-family:'Fraunces', serif;
+    font-size:1.15rem;
+    letter-spacing:0.02em;
+  }
+  .brand em{ font-style:italic; color:var(--amber); }
+  .nav-links{ display:flex; gap:1.8rem; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.1em;}
+  .nav-links a{ text-decoration:none; opacity:0.75; transition:opacity .2s; }
+  .nav-links a:hover{ opacity:1; }
+  @media (max-width:640px){ .nav-links{ display:none; } }
+
+  .hero-main{
+    position:relative; z-index:5;
+    flex:1;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:1rem clamp(1.2rem, 4vw, 3rem) 2rem;
+    max-width:1180px; margin:0 auto; width:100%;
+  }
+  .headline{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(2.4rem, 6.4vw, 5.2rem);
+    line-height:0.98;
+    margin:0.6rem 0 0.4rem;
+    max-width:14ch;
+  }
+  .headline i{ font-style:italic; color:var(--amber); font-weight:500;}
+  .sub{
+    max-width:46ch;
+    color:rgba(237,230,214,0.72);
+    font-size:1.02rem;
+    line-height:1.55;
+    margin-bottom:2.2rem;
+  }
+
+  /* split-flap scoreboard */
+  .scoreboard{
+    display:flex; flex-wrap:wrap; gap:0.9rem;
+    background:var(--flap-bg);
+    border:1px solid rgba(237,230,214,0.12);
+    border-radius:10px;
+    padding:1.1rem 1.3rem;
+    width:fit-content;
+    max-width:100%;
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.55);
+  }
+  .sb-group{ display:flex; flex-direction:column; gap:0.4rem; }
+  .sb-label{
+    font-size:0.62rem; text-transform:uppercase; letter-spacing:0.16em;
+    color:rgba(237,230,214,0.5); font-weight:600;
+  }
+  .flap-row{ display:flex; gap:0.28rem; }
+  .flap{
+    position:relative;
+    width:2.05rem; height:2.7rem;
+    background:#1B1F22;
+    border-radius:4px;
+    overflow:hidden;
+    box-shadow: inset 0 0 0 1px rgba(237,230,214,0.08);
+  }
+  .flap::after{
+    content:""; position:absolute; left:0; right:0; top:50%;
+    height:1px; background:rgba(0,0,0,0.55); z-index:3;
+  }
+  .flap .face{
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Archivo Black', sans-serif;
+    font-size:1.4rem;
+    color:var(--flap-cream);
+    background:linear-gradient(180deg, #23282B, #191C1E);
+  }
+  .flap.flipping .face{ animation:flipdown 0.42s ease-in; }
+  @keyframes flipdown{
+    0%{ transform:rotateX(0deg); }
+    50%{ transform:rotateX(-90deg); }
+    51%{ transform:rotateX(90deg); }
+    100%{ transform:rotateX(0deg); }
+  }
+  .flap-wide .face{ font-size:1.05rem; letter-spacing:-0.02em; }
+  .flap-wide{ width:2.9rem; }
+  .sb-divider{ width:1px; background:rgba(237,230,214,0.12); align-self:stretch; margin:0 0.2rem;}
+  .sb-status{
+    display:flex; align-items:center; gap:0.5rem;
+    font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em;
+    color:rgba(237,230,214,0.6); margin-top:0.7rem;
+  }
+  .live-dot{
+    width:8px; height:8px; border-radius:50%; background:var(--ball);
+    box-shadow:0 0 0 rgba(163,41,33,0.6);
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(163,41,33,0.55); }
+    70%{ box-shadow:0 0 0 10px rgba(163,41,33,0); }
+    100%{ box-shadow:0 0 0 0 rgba(163,41,33,0); }
+  }
+
+  /* pitch + delivery animation */
+  .pitch-strip{
+    position:relative; z-index:4;
+    height:150px;
+    background:
+      linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.18) 100%),
+      linear-gradient(90deg, var(--tan) 0%, var(--tan) 100%);
+    border-top:1px solid rgba(237,230,214,0.18);
+    overflow:hidden;
+  }
+  .pitch-strip .grass-l, .pitch-strip .grass-r{
+    position:absolute; top:0; bottom:0; width:20%;
+    background:repeating-linear-gradient(90deg, var(--pitch) 0 22px, var(--pitch-2) 22px 44px);
+  }
+  .pitch-strip .grass-l{ left:0; }
+  .pitch-strip .grass-r{ right:0; }
+  .crease{
+    position:absolute; bottom:14px; width:2px; height:26px; background:rgba(20,23,26,0.5);
+  }
+  .crease.left{ left:24%; } .crease.right{ right:24%; }
+  .stumps{
+    position:absolute; bottom:14px; display:flex; gap:3px;
+  }
+  .stumps.left{ left:22%; } .stumps.right{ right:22%; }
+  .stumps span{ width:3px; height:26px; background:var(--flap-bg); border-radius:2px; }
+
+  .bowler{
+    position:absolute; bottom:14px; left:20%;
+    width:10px; height:36px; border-radius:5px;
+    background:var(--night-2);
+    transform-origin:bottom center;
+    animation:bowl-run 3.2s ease-in-out infinite;
+  }
+  @keyframes bowl-run{
+    0%{ left:20%; transform:rotate(-4deg); }
+    28%{ left:26%; transform:rotate(10deg); }
+    30%{ left:26.5%; transform:rotate(-18deg); }
+    34%{ left:27%; transform:rotate(6deg); }
+    60%{ left:27%; transform:rotate(0deg); }
+    100%{ left:20%; transform:rotate(-4deg); }
+  }
+  .ball{
+    position:absolute; bottom:22px; left:27%;
+    width:9px; height:9px; border-radius:50%;
+    background:var(--ball);
+    box-shadow:0 0 6px rgba(163,41,33,0.6);
+    animation:deliver 3.2s ease-in infinite;
+  }
+  .ball::after{
+    content:""; position:absolute; inset:0; border-radius:50%;
+    border-top:1px dashed var(--ball-seam);
+    transform:rotate(20deg);
+  }
+  @keyframes deliver{
+    0%,32%{ left:27%; bottom:22px; opacity:1; }
+    55%{ left:50%; bottom:44px; }
+    78%{ left:73%; bottom:20px; }
+    82%{ left:76%; bottom:16px; opacity:1;}
+    83%{ opacity:0; }
+    100%{ opacity:0; left:27%; bottom:22px; }
+  }
+
+  .scroll-cue{
+    position:absolute; bottom:14px; left:50%; transform:translateX(-50%);
+    z-index:6; font-size:0.68rem; text-transform:uppercase; letter-spacing:0.16em;
+    color:rgba(237,230,214,0.55);
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .scroll-cue .stem{ width:1px; height:22px; background:rgba(237,230,214,0.4); animation:cue 1.8s ease-in-out infinite;}
+  @keyframes cue{ 0%,100%{ transform:scaleY(1); opacity:0.4;} 50%{ transform:scaleY(1.3); opacity:0.9; } }
+
+  /* ---------- COMMENTARY ---------- */
+  .section{ padding:5rem clamp(1.2rem, 4vw, 3rem); max-width:1180px; margin:0 auto; }
+  .section-head{ display:flex; align-items:baseline; justify-content:space-between; gap:1rem; margin-bottom:2rem; flex-wrap:wrap;}
+  .section-title{ font-family:'Fraunces', serif; font-size:clamp(1.5rem, 3vw, 2.1rem); font-weight:600; margin:0.2rem 0 0;}
+
+  .commentary{
+    background:var(--ink);
+    color:var(--flap-cream);
+    border-radius:14px;
+    padding:1.6rem clamp(1rem,3vw,2rem);
+  }
+  .commentary .cm-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; }
+  .commentary .cm-head .eyebrow{ color:var(--amber); }
+  #feed{
+    display:flex; flex-direction:column-reverse;
+    gap:0; max-height:320px; overflow:hidden;
+    -webkit-mask-image:linear-gradient(180deg, black 78%, transparent 100%);
+            mask-image:linear-gradient(180deg, black 78%, transparent 100%);
+  }
+  .cm-line{
+    display:grid; grid-template-columns:3.6rem 1fr auto;
+    gap:0.9rem; align-items:baseline;
+    padding:0.65rem 0;
+    border-bottom:1px solid var(--line);
+    font-size:0.92rem;
+    animation:cm-in 0.4s ease-out;
+  }
+  @keyframes cm-in{ from{ opacity:0; transform:translateY(6px);} to{ opacity:1; transform:translateY(0);} }
+  .cm-over{ font-family:'Archivo Black', sans-serif; font-size:0.78rem; color:var(--amber); }
+  .cm-text{ color:rgba(237,230,214,0.86); line-height:1.4; }
+  .cm-run{
+    font-family:'Archivo Black', sans-serif; font-size:0.8rem;
+    padding:0.15rem 0.5rem; border-radius:20px; text-align:center; min-width:1.6rem;
+    background:rgba(237,230,214,0.08); color:var(--flap-cream);
+  }
+  .cm-run.four{ background:rgba(242,180,65,0.18); color:var(--amber); }
+  .cm-run.six{ background:rgba(163,41,33,0.22); color:#f0a29c; }
+  .cm-run.wkt{ background:var(--ball); color:var(--flap-cream); }
+
+  /* ---------- RUN RATE ---------- */
+  .chart-wrap{
+    background:var(--flap-cream);
+    border:1px solid rgba(20,23,26,0.08);
+    border-radius:14px;
+    padding:1.6rem clamp(1rem,3vw,2rem) 1rem;
+  }
+  .chart-wrap svg{ width:100%; height:auto; display:block; }
+  #rr-line{
+    stroke-dasharray:600; stroke-dashoffset:600;
+    animation:draw 2.2s ease forwards 0.2s;
+  }
+  @keyframes draw{ to{ stroke-dashoffset:0; } }
+  .chart-legend{ display:flex; gap:1.6rem; margin-top:0.8rem; font-size:0.78rem; color:var(--ink-soft); }
+  .chart-legend span{ display:inline-flex; align-items:center; gap:6px; }
+  .dot{ width:8px; height:8px; border-radius:50%; }
+
+  /* ---------- SQUAD ---------- */
+  .squad-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(190px,1fr));
+    gap:1rem;
+  }
+  .player{
+    perspective:1000px; height:230px;
+  }
+  .player-inner{
+    position:relative; width:100%; height:100%;
+    transition:transform 0.6s cubic-bezier(.2,.8,.2,1);
+    transform-style:preserve-3d;
+  }
+  .player:hover .player-inner{ transform:rotateY(180deg); }
+  .p-face{
+    position:absolute; inset:0; backface-visibility:hidden;
+    border-radius:12px; padding:1.1rem;
+    display:flex; flex-direction:column; justify-content:flex-end;
+  }
+  .p-front{
+    background:linear-gradient(160deg, var(--pitch) 0%, var(--night-2) 100%);
+    color:var(--flap-cream);
+  }
+  .p-front .cap{
+    font-family:'Archivo Black'; font-size:1.6rem; opacity:0.5;
+  }
+  .p-front .pname{ font-family:'Fraunces', serif; font-size:1.15rem; margin-top:0.4rem; }
+  .p-front .prole{ font-size:0.72rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--amber); margin-top:0.15rem;}
+  .p-back{
+    background:var(--flap-bg); color:var(--flap-cream);
+    transform:rotateY(180deg);
+    justify-content:center; gap:0.5rem;
+  }
+  .p-back .stat{ display:flex; justify-content:space-between; font-size:0.85rem; border-bottom:1px solid var(--line); padding-bottom:0.3rem;}
+  .p-back .stat b{ font-family:'Archivo Black'; font-weight:400; color:var(--amber); }
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--ink); color:rgba(237,230,214,0.7);
+    padding:3rem clamp(1.2rem,4vw,3rem) 2rem;
+  }
+  .foot-grid{ display:flex; flex-wrap:wrap; justify-content:space-between; gap:2rem; max-width:1180px; margin:0 auto; }
+  .foot-grid h4{ font-family:'Fraunces', serif; color:var(--flap-cream); font-weight:500; margin:0 0 0.6rem; font-size:1.2rem;}
+  .foot-grid p{ font-size:0.85rem; max-width:32ch; line-height:1.5; margin:0;}
+  .foot-bottom{
+    max-width:1180px; margin:2.4rem auto 0; padding-top:1.4rem;
+    border-top:1px solid var(--line);
+    font-size:0.75rem; display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.6rem;
+  }
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="floodlights"><div class="beam b1"></div><div class="beam b2"></div></div>
+  <div class="stars" id="stars"></div>
+
+  <nav class="nav">
+    <div class="brand">The <em>Boundary</em></div>
+    <div class="nav-links">
+      <a href="#commentary">Commentary</a>
+      <a href="#rate">Run Rate</a>
+      <a href="#squad">Squad</a>
+    </div>
+  </nav>
+
+  <div class="hero-main">
+    <div class="eyebrow">Day 3 &middot; Afternoon Session &middot; Kensington Oval</div>
+    <h1 class="headline">Six balls left<br>in <i>every</i> over<br>that matters.</h1>
+    <p class="sub">A live look at the middle session — ball by ball, over by over, on a split-flap board that hasn't changed its manners since 1962.</p>
+
+    <div class="scoreboard" id="scoreboard">
+      <div class="sb-group">
+        <span class="sb-label">Runs</span>
+        <div class="flap-row" id="flap-runs"></div>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-group">
+        <span class="sb-label">Wkts</span>
+        <div class="flap-row" id="flap-wkts"></div>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-group">
+        <span class="sb-label">Overs</span>
+        <div class="flap-row" id="flap-overs"></div>
+      </div>
+      <div class="sb-divider"></div>
+      <div class="sb-group">
+        <span class="sb-label">Batting</span>
+        <div class="flap-row" id="flap-team"></div>
+      </div>
+    </div>
+    <div class="sb-status"><span class="live-dot"></span> Live &middot; South Zone vs Coastal XI</div>
+  </div>
+
+  <div class="pitch-strip">
+    <div class="grass-l"></div><div class="grass-r"></div>
+    <div class="crease left"></div><div class="crease right"></div>
+    <div class="stumps left"><span></span><span></span><span></span></div>
+    <div class="stumps right"><span></span><span></span><span></span></div>
+    <div class="bowler"></div>
+    <div class="ball"></div>
+  </div>
+  <div class="scroll-cue"><span>Scroll</span><span class="stem"></span></div>
+</section>
+
+<section class="section" id="commentary">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow" style="color:var(--ball)">Ball by ball</span>
+      <h2 class="section-title">What just happened</h2>
+    </div>
+  </div>
+  <div class="commentary">
+    <div class="cm-head">
+      <span class="eyebrow">Live feed</span>
+      <span class="eyebrow" id="over-now">Over 14.2</span>
+    </div>
+    <div id="feed"></div>
+  </div>
+</section>
+
+<section class="section" id="rate">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow" style="color:var(--ball)">Scoring pattern</span>
+      <h2 class="section-title">Run rate through the innings</h2>
+    </div>
+  </div>
+  <div class="chart-wrap">
+    <svg viewBox="0 0 600 220" preserveAspectRatio="none">
+      <line x1="0" y1="55" x2="600" y2="55" stroke="rgba(20,23,26,0.08)"/>
+      <line x1="0" y1="110" x2="600" y2="110" stroke="rgba(20,23,26,0.08)"/>
+      <line x1="0" y1="165" x2="600" y2="165" stroke="rgba(20,23,26,0.08)"/>
+      <polyline id="rr-line" points="0,150 40,140 80,130 120,120 160,132 200,100 240,95 280,70 320,80 360,55 400,60 440,40 480,50 520,30 560,35 600,20"
+        fill="none" stroke="#A32921" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      <polyline points="0,170 40,168 80,160 120,158 160,150 200,148 240,140 280,138 320,130 360,128 400,120 440,118 480,110 520,108 560,100 600,98"
+        fill="none" stroke="#C9A66B" stroke-width="2" stroke-dasharray="4 5"/>
+    </svg>
+    <div class="chart-legend">
+      <span><i class="dot" style="background:#A32921"></i>This innings</span>
+      <span><i class="dot" style="background:#C9A66B"></i>Required rate</span>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="squad">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow" style="color:var(--ball)">On the field</span>
+      <h2 class="section-title">Today's XI — hover to flip</h2>
+    </div>
+  </div>
+  <div class="squad-grid" id="squad-grid"></div>
+</section>
+
+<footer>
+  <div class="foot-grid">
+    <div>
+      <h4>The Boundary</h4>
+      <p>An unofficial scoreboard, kept the old-fashioned way, for anyone who still checks the score between overs.</p>
+    </div>
+    <div>
+      <h4>Kensington Oval</h4>
+      <p>Bridgetown &middot; Capacity 28,000 &middot; Pitch: dry, slow turn expected day four.</p>
+    </div>
+    <div>
+      <h4>Session</h4>
+      <p>Tea at 4:40pm local &middot; New ball due over 20.</p>
+    </div>
+  </div>
+  <div class="foot-bottom">
+    <span>&copy; 2026 The Boundary. A concept scoreboard, not a live data feed.</span>
+    <span>Built with split-flap devotion.</span>
+  </div>
+</footer>
+
+<script>
+/* stars */
+(function(){
+  const wrap = document.getElementById('stars');
+  for(let i=0;i<40;i++){
+    const s = document.createElement('span');
+    s.style.left = Math.random()*100+'%';
+    s.style.top = Math.random()*40+'%';
+    s.style.animationDelay = (Math.random()*3.5)+'s';
+    wrap.appendChild(s);
+  }
+})();
+
+/* ---- split-flap scoreboard ---- */
+const CHARS = "0123456789";
+function makeFlap(container, wide){
+  const flap = document.createElement('div');
+  flap.className = 'flap' + (wide ? ' flap-wide' : '');
+  const face = document.createElement('div');
+  face.className = 'face';
+  face.textContent = '0';
+  flap.appendChild(face);
+  container.appendChild(flap);
+  return { el: flap, face };
+}
+function setFlap(tile, value){
+  if(tile.face.textContent === String(value)) return;
+  tile.el.classList.remove('flipping');
+  void tile.el.offsetWidth;
+  tile.el.classList.add('flipping');
+  setTimeout(()=>{ tile.face.textContent = value; }, 190);
+  setTimeout(()=>{ tile.el.classList.remove('flipping'); }, 430);
+}
+
+const runsWrap = document.getElementById('flap-runs');
+const wktsWrap = document.getElementById('flap-wkts');
+const oversWrap = document.getElementById('flap-overs');
+const teamWrap = document.getElementById('flap-team');
+
+const runTiles = [makeFlap(runsWrap), makeFlap(runsWrap), makeFlap(runsWrap)];
+const wktTile = [makeFlap(wktsWrap)];
+const overTiles = [makeFlap(oversWrap), makeFlap(oversWrap,true)]; // second is "over.ball" wide
+const teamTiles = [makeFlap(teamWrap,true), makeFlap(teamWrap,true), makeFlap(teamWrap,true)];
+
+const TEAM = ['C','X','I'];
+teamTiles.forEach((t,i)=> setFlap(t, TEAM[i]));
+
+let state = { runs: 178, wkts: 4, over: 14, ball: 2 };
+
+function renderScore(){
+  const rs = String(state.runs).padStart(3,'0').split('');
+  runTiles.forEach((t,i)=> setFlap(t, rs[i]));
+  setFlap(wktTile[0], state.wkts);
+  setFlap(overTiles[0], state.over);
+  setFlap(overTiles[1], '.'+state.ball);
+  document.getElementById('over-now').textContent = 'Over ' + state.over + '.' + state.ball;
+}
+renderScore();
+
+/* ---- commentary feed ---- */
+const feed = document.getElementById('feed');
+const commentBank = [
+  "Fuller outside off, driven firmly through the covers.",
+  "Short and wide, cut away — good placement, hard running.",
+  "On the pads, tucked away fine, easy couple.",
+  "Full and straight, defended solidly back down the pitch.",
+  "Length ball, worked into the gap at midwicket.",
+  "Beaten! Sharp turn, edges past the keeper for four byes.",
+  "Flighted delivery, driven straight back past the bowler.",
+  "Slower ball, mistimed but safe, no run.",
+  "Cracked through the covers — races away to the rope.",
+  "Steps out, lofts it high and over long-on — that's flat and far.",
+  "Good length, tight line, dot ball, pressure building.",
+  "Edged! Flies through the slip cordon for four.",
+  "Full toss, controlled and driven to long-off for a single."
+];
+let overCounter = state.over, ballCounter = state.ball;
+
+function addBall(){
+  ballCounter++;
+  if(ballCounter > 6){ ballCounter = 1; overCounter++; }
+  const roll = Math.random();
+  let runs, tag, text;
+  if(roll < 0.06){ runs='W'; tag='wkt'; text='Gone! Clean bowled — the stumps are shattered.'; state.wkts = Math.min(state.wkts+1,10); }
+  else if(roll < 0.14){ runs=6; tag='six'; text=commentBank[9]; state.runs += 6; }
+  else if(roll < 0.30){ runs=4; tag='four'; text=commentBank[Math.floor(Math.random()*commentBank.length)]; state.runs += 4; }
+  else if(roll < 0.45){ runs=0; tag=''; text=commentBank[10]; }
+  else { runs = Math.floor(Math.random()*3)+1; tag=''; text=commentBank[Math.floor(Math.random()*commentBank.length)]; state.runs += runs; }
+
+  state.over = overCounter; state.ball = ballCounter;
+  renderScore();
+
+  const line = document.createElement('div');
+  line.className = 'cm-line';
+  line.innerHTML = `<span class="cm-over">${overCounter}.${ballCounter}</span>
+    <span class="cm-text">${text}</span>
+    <span class="cm-run ${tag}">${runs}</span>`;
+  feed.appendChild(line);
+  while(feed.children.length > 8){ feed.removeChild(feed.firstChild); }
+}
+for(let i=0;i<5;i++) addBall();
+setInterval(addBall, 3400);
+
+/* ---- squad ---- */
+const squad = [
+  { cap:'01', name:'R. Holder', role:'Opening Bat', runs:2140, avg:41.2, sr:78.4 },
+  { cap:'07', name:'K. Deshmukh', role:'Top Order', runs:1876, avg:38.9, sr:81.1 },
+  { cap:'11', name:'T. Marchetti', role:'Middle Order', runs:1590, avg:35.6, sr:88.7 },
+  { cap:'23', name:'A. Bello', role:'All-Rounder', runs:980, avg:29.4, sr:96.2 },
+  { cap:'34', name:'S. Whitlock', role:'Wicketkeeper', runs:1120, avg:31.8, sr:84.0 },
+  { cap:'19', name:'J. Okafor', role:'Fast Bowler', wkts:112, econ:3.4, sr5:'22.1' },
+  { cap:'88', name:'P. Vance', role:'Spinner', wkts:96, econ:2.9, sr5:'24.6' },
+  { cap:'45', name:'D. Cassidy', role:'Fast Bowler', wkts:88, econ:3.7, sr5:'26.3' },
+];
+const grid = document.getElementById('squad-grid');
+squad.forEach(p=>{
+  const card = document.createElement('div');
+  card.className = 'player';
+  const statsHTML = p.runs !== undefined
+    ? `<div class="stat"><span>Runs</span><b>${p.runs}</b></div>
+       <div class="stat"><span>Average</span><b>${p.avg}</b></div>
+       <div class="stat"><span>Strike rate</span><b>${p.sr}</b></div>`
+    : `<div class="stat"><span>Wickets</span><b>${p.wkts}</b></div>
+       <div class="stat"><span>Economy</span><b>${p.econ}</b></div>
+       <div class="stat"><span>5-wkt hauls</span><b>${p.sr5}</b></div>`;
+  card.innerHTML = `
+    <div class="player-inner">
+      <div class="p-face p-front">
+        <div class="cap">${p.cap}</div>
+        <div class="pname">${p.name}</div>
+        <div class="prole">${p.role}</div>
+      </div>
+      <div class="p-face p-back">
+        ${statsHTML}
+      </div>
+    </div>`;
+  grid.appendChild(card);
+});
+</script>
+</body>
+</html>
